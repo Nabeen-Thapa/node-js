@@ -1,0 +1,7 @@
+node.js
+-server side porgrammming,
+- generally, js code run in web browser,
+- node is environment that run js code outside the web browser,
+- use v8 google's engine to convert the js code inot machine code,
+- it run js code outside the browser so we cant access some features of js like DOM, window objects(like document.querySelector() ), localstorage,
+- node porvide lot'of API's and modules like file handling, creating server etc.
