@@ -5,7 +5,7 @@ there are 2 types of module
     - these are included by default so we can use without install, just import  them and use
 
     some built in models and use
-    - os    : provide information about operating system
+    - os    : provides methods/functions with which you can get information about operating system
     - PATH  : provide uitlity functions for working with file paths
     - FS    : file system operations like reading and writing files.
     - HTTP  : create HTTP servers
