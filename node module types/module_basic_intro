@@ -1,0 +1,21 @@
+module types in node js
+
+there are 2 types of module
+1. Built in modules
+    - these are included by default so we can use without install, just import  them and use
+
+    some built in models and use
+    - os    : provide information about operating system
+    - PATH  : provide uitlity functions for working with file paths
+                Join path segments together
+                Tell if a path is absolute or not
+                Get the last portion/segment of a path
+                Get the file extension from a path, and much more!
+
+    - FS    : file system operations like reading and writing files.
+    - HTTP  : create HTTP servers
+
+
+2. External modules
+    - these are created by other developers, not included by default so we have to install to use
+
