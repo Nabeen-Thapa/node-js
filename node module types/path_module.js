@@ -27,3 +27,6 @@ console.log(pathInfo);
 //       name: 'path_module'
 //     }
 //   }
+
+console.log(path.sep); //output: \
+console.log(path.join('node-js', 'node module types', 'path_module.js')); //output : node-js\node module types\path_module.js
