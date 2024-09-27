@@ -12,9 +12,38 @@ there are 2 types of module
                 Get the last portion/segment of a path
                 Get the file extension from a path, and much more!
 
-    - FS    : file system operations like reading and writing files.
-    - HTTP  : create HTTP servers
+    - FS()    : file system operations like reading and writing files.         
+                Reading a file (sync or async way)
+                Writing to a file (sync or async way)
+                Deleting a file
+                Reading the contents of a director
+                Renaming a file
+                Watching for changes in a file, and much more
+            
+        Synchronous Approach: 
+        - create a file and write the data to it in a blocking manner,
+        - means that NodeJS waits for the creation and write operation to complete before moving on to the next line of code. 
+        - If an error occurs during this process, it throws an exception that must be caught using try...catch.
+        
+        Asynchronous Approach:
+        - create and write data to a file in a non-blocking manner,
+        - means that NodeJS does not wait for the write operation to complete before moving on to the next line of code.
+        -  it takes a callback function that gets called once the entire process is completed. If an error occurs during the write operation, the error object is passed to the callback function.
 
+
+            some functions of fs are 
+                -fs.mkdir(), // in here fs is variable that store fs pakage
+                -fs.writeFile(),
+                fs.readFile(),
+                  
+        about {encoding:'utf-8'} that used as parameter in readFile()
+            -used to specify the character encoding 
+            -used to interpret the file data.
+            - By default, if no encoding parameter is provided, the method returns a raw buffer.
+            - If the readFile() method is called without encoding parameter, result will be:
+            - <Buffer 54 68 69 73 20 69 73 20 73 6f 6d 65 20 64 61 74 61 20 69 6e 20 61 20 66 69 6c 65>
+
+    - HTTP  : create HTTP servers
 
 2. External modules
     - these are created by other developers, not included by default so we have to install to use
