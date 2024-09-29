@@ -52,3 +52,4 @@ steps to create server:
     1. import http module i.e require('http')
     2. The http module provides you with http.createServer() function which helps you create a server. This function accepts a callback function with 2 parameters – req (which stores the incoming request object) and res which stands for the response to be sent by the server. This callback function gets executed every time someone hits the server.      
     3. Listening the server at some port using the listen() method.
+        -The listen() function in Node.js http module is used to start a server that listens for incoming requests.It takes a port number as an argument and binds the server to that port number so that it can receive incoming requests on that port.
