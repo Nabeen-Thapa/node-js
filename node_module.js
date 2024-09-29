@@ -6,7 +6,13 @@
 // - shared across multiple projects,
 // - let's do
 
+// function sayhello(name){
+//     console.log(`hello ${name}`);
+// }
+// module.exports =sayhello
+
 function sayhello(name){
     console.log(`hello ${name}`);
 }
+// sayhello("Ram"); //argument is given form here
 module.exports =sayhello

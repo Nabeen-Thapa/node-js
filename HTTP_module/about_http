@@ -1,0 +1,55 @@
+HTTP module in node js
+- stands for HyperText Treanfer Protocol,
+- used to transfer data over internet,
+- communicate between  clients and servers,
+ when we serch something in internet (called request) and get what we serch as response, that happen beacuse of communication between your machine(e.g, laptop/mobile) and server (e.g. google.com), in this case you are client(who serach) and google.com it server. 
+ - The server sent back the HTML, CSS and JS Files as the response.
+ - The server processes the request, performs necessary operations, and sends a response back to the client. The response contains a status code, headers, and the response body with the requested data.
+ 
+
+ component of request-response
+ 1. The status line 
+    -  first line of the request or response
+    - contains information about the message, such as the method used, URL, protocol version, and so on.
+
+2. The Header: 
+    - This is a collection of key-value pairs, separated by colon.
+    - include additional information about the message such as the content type, content length, caching information, and so on.
+
+3.THew body
+    - contains the actual data being sent or received. 
+    - In the case of requests, it might contain form data or query parameters. In the case of responses, it could be HTML, JSON, XML, or any other data format.
+
+
+http method
+    -nown as HTTP verbs,
+    -actions that a Client can perform on a Server,
+
+    - hte 4 http methods are:
+        1. GET: Retrieves a resource from the server, browser send http GET tequest when we search something in browser
+
+        2. POST: Inserts a resource in the server, when we fill any online form browser sends a POST request to hte server with our filled data,
+
+        3. PUT: Updates an existing resource in the server, when we update out account details like email password it done through PUT requesr,
+
+        4. DELETE: Deletes a resource from the server, if we delete any account like gmail account it is done through DELETE reauest,
+    these 4 are just example, actual requests and their purposes may vary.
+
+
+What is a Status Code?
+    - three-digit numbers that indicate the status of a HTTP request made to a server.
+    - They are server responses that provide information about the request's outcome.
+    like:
+    200 = ok
+    201 = created
+    204 = no content
+    400 =  bad request
+    401 = unauthorized
+    404 = not found etc.
+
+
+steps to create server:
+    1. import http module i.e require('http')
+    2. The http module provides you with http.createServer() function which helps you create a server. This function accepts a callback function with 2 parameters – req (which stores the incoming request object) and res which stands for the response to be sent by the server. This callback function gets executed every time someone hits the server.      
+    3. Listening the server at some port using the listen() method.
+        -The listen() function in Node.js http module is used to start a server that listens for incoming requests.It takes a port number as an argument and binds the server to that port number so that it can receive incoming requests on that port.
