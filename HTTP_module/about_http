@@ -53,3 +53,8 @@ steps to create server:
     2. The http module provides you with http.createServer() function which helps you create a server. This function accepts a callback function with 2 parameters – req (which stores the incoming request object) and res which stands for the response to be sent by the server. This callback function gets executed every time someone hits the server.      
     3. Listening the server at some port using the listen() method.
         -The listen() function in Node.js http module is used to start a server that listens for incoming requests.It takes a port number as an argument and binds the server to that port number so that it can receive incoming requests on that port.
+
+methods for response
+    1. res.writeHead() – This method is used to send the response headers to the client. The status code and headers like content-type can be set using this method.
+    2. res.write() – This method is used to send the response body to the client.
+    3. res.end() – This method is used to end the response process.
