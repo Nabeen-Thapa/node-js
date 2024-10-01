@@ -19,9 +19,11 @@ function parseFormData(request, callback) {
 }
 
 // Read HTML files synchronously
+const titleBar = fs.readFileSync('Title_bar.html');
 const addUserForm = fs.readFileSync('add_user_form.html', 'utf8');
 const userTableTemplate = fs.readFileSync('user_table.html', 'utf8');
 const editUserFormTemplate = fs.readFileSync('user_edit_form.html', 'utf8');
+
 
 // Store user data in memory
 let users = [];
@@ -30,6 +32,8 @@ let users = [];
 const server = http.createServer((req, res) => {
     if (req.method === 'GET' && req.url === '/') {
         // Display user table
+        res.writeHead(200, {'content-type': 'text/html'});
+    res.write(titleBar); // Write the title bar first
         const userRows = users.map((user, index) => `
             <tr>
                 <td>${user.uid}</td>
@@ -52,8 +56,9 @@ const server = http.createServer((req, res) => {
 
         const userTable = userTableTemplate.replace('{{userRows}}', userRows);
 
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(userTable);
+        // res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write(userTable);
+        res.end();
     } else if (req.method === 'GET' && req.url === '/add_user_form.html') {
         // Serve add user form
         res.writeHead(200, { 'Content-Type': 'text/html' });
