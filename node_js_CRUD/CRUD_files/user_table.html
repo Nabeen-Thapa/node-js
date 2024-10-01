@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <button type="button" class="btn btn-primary mt-5">
+            <a href="add_user_form.html" class="text-white text-decoration-none">Add User</a>
+        </button>
+        <h2>User Table</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th colspan="2">Operation</th>
+                </tr>
+            </thead>
+            <tbody class="tbody-light">
+                {{userRows}} <!-- User rows will be inserted here dynamically -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
