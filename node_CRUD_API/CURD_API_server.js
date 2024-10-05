@@ -1,124 +1,111 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
-// File paths for storing data and last ID
-const dataFilePath = path.join(__dirname, 'users.json'); //path from current directory to users.js
-const lastIdFilePath = path.join(__dirname, 'last_id.txt');//path from current directory to last_id.txt
+// File paths
+const dataFilePath = path.join(__dirname, "users.json"); // File for user data
 
-// Read user data from users.json
-const readUserData = () => {
+// Function to read data from the JSON file
+function readData() {
     if (!fs.existsSync(dataFilePath)) {
-        return []; // Return empty array if no data exists
+        return [];
     }
     const data = fs.readFileSync(dataFilePath);
-    return JSON.parse(data); //if exist return user data
-};
+    return JSON.parse(data);
+}
 
-// Write user data to to users.json
-const writeUserData = (data) => {
+// Function to write data to the JSON file
+function writeData(data) {
     fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2));
-};
+}
 
-// Read the last used ID 
-const readLastId = () => {
-    if (!fs.existsSync(lastIdFilePath)) {
-        return 0; // If no last id exists, start from 0
-    }
-    return parseInt(fs.readFileSync(lastIdFilePath, 'utf8'), 10);
-};
-
-// Write the last used ID to file
-const writeLastId = (id) => {
-    fs.writeFileSync(lastIdFilePath, id.toString());
-};
-
-// Send JSON response
-const sendJsonResponse = (res, statusCode, data) => {
-    res.writeHead(statusCode, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(data));
-};
-
-// Create server
 const server = http.createServer((req, res) => {
-    let users = readUserData();
-    let lastId = readLastId(); // Read the last ID from file
+    console.log(`Request received: ${req.method} ${req.url}`);
 
-    // accress users
-    if (req.method === 'GET' && req.url === '/users') {
-        sendJsonResponse(res, 200, users);
-
-    // Handle POST /users (create new user)
-    } else if (req.method === 'POST' && req.url === '/users') {
-        let body = '';
-        req.on('data', chunk => {
+    // POST method to add a new name
+    if (req.method === "POST" && req.url === "/users") {
+        let body = "";
+        req.on("data", chunk => {
             body += chunk.toString();
         });
-        req.on('end', () => {
-            const { name } = JSON.parse(body);
-            if (!name) {
-                sendJsonResponse(res, 400, { error: 'Name is required' });
-                return;
+        req.on("end", () => {
+            try {
+                const { name } = JSON.parse(body);
+                if (!name) {
+                    throw new Error("Name is required");
+                }
+                const data = readData();
+                const id = data.length > 0 ? data[data.length - 1].id + 1 : 1; // Generate unique ID
+                const newEntry = { id, name };
+                data.push(newEntry);
+                writeData(data);
+                res.writeHead(201, { "Content-Type": "application/json" });
+                res.end(JSON.stringify(newEntry));
+
+            } catch (error) {
+                res.writeHead(400, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ message: "Invalid JSON input or missing name" }));
             }
-
-            // Increment ID for the new user
-            lastId += 1; 
-            const newUser = { id: lastId, name };
-            users.push(newUser);
-            writeUserData(users); // Save new user to JSON file
-            writeLastId(lastId); // Update the last used ID
-
-            sendJsonResponse(res, 201, newUser); // Respond with the newly created user
         });
 
-    // Handle PUT /users/:id (edit user by ID)
-    } else if (req.method === 'PUT' && req.url.startsWith('/users/')) {
-        const id = parseInt(req.url.split('/')[2], 10);
-        let body = '';
-        req.on('data', chunk => {
+    // PATCH method to edit a name by ID
+    } else if (req.method === "PATCH" && req.url.startsWith("/users/")) {
+        const id = parseInt(req.url.split("/").pop());
+        let body = "";
+        req.on("data", chunk => {
             body += chunk.toString();
         });
-        req.on('end', () => {
-            const { name } = JSON.parse(body);
-            if (!name) {
-                sendJsonResponse(res, 400, { error: 'Name is required' });
-                return;
-            }
 
-            const userIndex = users.findIndex(u => u.id === id);
-            if (userIndex === -1) {
-                sendJsonResponse(res, 404, { error: 'User not found' });
-                return;
-            }
+        req.on("end", () => {
+            try {
+                const { name } = JSON.parse(body);
+                const data = readData();
+                const entryIndex = data.findIndex(entry => entry.id === id);
 
-            // Update user name
-            users[userIndex].name = name;
-            writeUserData(users); // Save updated user list to file
-            sendJsonResponse(res, 200, users[userIndex]); // Respond with the updated user
+                if (entryIndex !== -1) {
+                    data[entryIndex].name = name; // Update the name
+                    writeData(data);
+                    res.writeHead(200, { "Content-Type": "application/json" });
+                    res.end(JSON.stringify(data[entryIndex]));
+                } else {
+                    res.writeHead(404, { "Content-Type": "application/json" });
+                    res.end(JSON.stringify({ message: "Entry not found" }));
+                }
+            } catch (error) {
+                res.writeHead(400, { "Content-Type": "application/json" });
+                res.end(JSON.stringify({ message: "Invalid JSON input or missing name" }));
+            }
         });
 
-    // Handle DELETE /users/:id (delete user by ID)
-    } else if (req.method === 'DELETE' && req.url.startsWith('/users/')) {
-        const id = parseInt(req.url.split('/')[2], 10);
+    // DELETE method to remove a name by ID
+    } else if (req.method === "DELETE" && req.url.startsWith("/users/")) {
+        const id = parseInt(req.url.split("/").pop());
+        const data = readData();
+        const filteredData = data.filter(entry => entry.id !== id); // Remove entry by ID
 
-        const userIndex = users.findIndex(u => u.id === id);
-        if (userIndex === -1) {
-            sendJsonResponse(res, 404, { error: 'User not found' });
-            return;
+        if (data.length !== filteredData.length) {
+            writeData(filteredData);
+            res.writeHead(204); // No content
+            res.end();
+        } else {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ message: "Entry not found" }));
         }
 
-        // Remove user from the list
-        users.splice(userIndex, 1);
-        writeUserData(users); // Save updated user list to file
-        sendJsonResponse(res, 200, { message: 'User deleted successfully' });
+    // GET method to retrieve all names (correct route to "/users")
+    } else if (req.method === "GET" && req.url === "/users") {
+        const data = readData();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(data));
 
+    // Handle invalid routes
     } else {
-        // Handle 404 for unknown routes
-        sendJsonResponse(res, 404, { error: 'Route not found' });
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ message: "Route not found" }));
     }
 });
 
-// Start the server
-server.listen(3000, () => {
-    console.log('Server running on http://localhost:3000');
+const PORT = 4000;
+server.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
