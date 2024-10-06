@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Users</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Add User Form Heading -->
+        <h2 class="mt-5 fs-30 text-center fw-bold">add your task</h2>
+
+        <!-- Form for adding a new task -->
+        <form action="/submit" method="POST">
+            <!-- task id -->
+            <div class="form-group">
+                <label for="task_id">Task id</label>
+                <input type="text" class="form-control" id="task_id" name="task_id" placeholder="Enter your task task" required>
+            </div>
+            <!-- task title input field-->
+            <div class="form-group">
+                <label for="task_name">task name</label>
+                <input type="text" class="form-control" id="task_name" name="task_name" placeholder="your task name" required>
+            </div>
+
+            <!-- task description filed -->
+            <div class="form-group">
+                <label for="task_desc">Task description</label>
+                <input type="text" class="form-control" id="task_desc" name="task_desc" placeholder="Enter your task description" required>
+            </div>
+
+            <!-- task start date -->
+            <div class="form-group">
+                <label for="start_data">start date</label>
+                <input type="date" class="form-control" id="start_data" name="start_data" placeholder="Enter your task start date" required>
+            </div>
+            <!-- save task Button -->
+            <button type="submit" class="btn btn-primary mt-5">Save</button>
+        </form>
+    </div>
+
+    
+</body>
+</html>
