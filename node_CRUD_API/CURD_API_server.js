@@ -97,7 +97,20 @@ const server = http.createServer((req, res) => {
         const data = readData();
         res.writeHead(200, { "Content-Type": "application/json" });
         res.end(JSON.stringify(data));
+    }
+       //else if (req.method === "GET" && /^\/users\/\d+$/.test(req.url))
+       else if(req.method === "GET" && req.url.startsWith('/users/')) {
+        const id = parseInt(req.url.split("/").pop());
+        const data = readData();
+        const user = data.find(entry => entry.id === id);
 
+        if (user) {
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(user));
+        } else {
+            res.writeHead(404, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ message: "User not found" }));
+        } 
     // Handle invalid routes
     } else {
         res.writeHead(404, { "Content-Type": "application/json" });
